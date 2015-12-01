@@ -5,6 +5,11 @@ const path = require('path');
 const routes = [
   {
     method: 'GET',
+    path: '/',
+    handler: require('./handlers/home')
+  },
+  {
+    method: 'GET',
     path: '/cards',
     handler: require('./handlers/list-cards')
   },
