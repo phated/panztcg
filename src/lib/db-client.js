@@ -12,7 +12,7 @@ function map(mapperFn, list){
 
 function docs(item){
   const doc = item.doc;
-  return _.assign({}, doc, { image: `http://localhost:3000${doc.image}` });
+  return doc;
 }
 
 const allDocsConfig = {
