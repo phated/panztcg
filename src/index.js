@@ -11,7 +11,7 @@ const DbClient = require('./lib/db-client');
 
 const server = new Server();
 
-server.connection({ port: 3000 });
+server.connection({ port: process.env.PORT });
 
 function onStart(err){
   assert(!err);
@@ -20,7 +20,7 @@ function onStart(err){
 
   server.app.db = db;
 
-  console.log('Server running on: http://localhost:3000');
+  console.log(`Server running on: ${server.info.uri}`);
 }
 
 function onRegister(err){
