@@ -10,6 +10,11 @@ const routes = [
   },
   {
     method: 'GET',
+    path: '/cards/{card_id}',
+    handler: require('./handlers/get-card')
+  },
+  {
+    method: 'GET',
     path: '/images/{param*}',
     handler: {
       directory: {

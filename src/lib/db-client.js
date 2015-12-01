@@ -14,22 +14,24 @@ function docs(item){
   return _.assign({}, doc, { image: `http://localhost:3000${doc.image}` });
 }
 
+const allDocsConfig = {
+  startkey: '_design0',
+  include_docs: true
+};
+
 class DbClient {
   constructor(path){
     this._db = new PouchDB(path);
   }
 
-  _list(){
-    return when(this._db.allDocs({
-      startkey: '_design0',
-      include_docs: true
-    }));
-  }
-
   list(){
-    return this._list()
+    return when(this._db.allDocs(allDocsConfig))
       .fold(reach, 'rows')
       .fold(map, docs);
+  }
+
+  get(id){
+    return when(this._db.get(id));
   }
 
 }
