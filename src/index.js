@@ -11,7 +11,7 @@ const DbClient = require('./lib/db-client');
 
 const server = new Server();
 
-server.connection({ port: process.env.PORT });
+server.connection({ port: process.env.PORT, routes: { cors: true } });
 
 function onStart(err){
   assert(!err);

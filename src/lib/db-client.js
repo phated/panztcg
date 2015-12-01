@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const when = require('when');
 const PouchDB = require('pouchdb');
 PouchDB.plugin(require('pouchdb-quick-search'));
