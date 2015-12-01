@@ -29,6 +29,7 @@
     "inert": "^3.2.0",
     "lodash": "^3.10.1",
     "origami": "^0.3.0",
+    "pouchdb-quick-search": "^1.1.1",
     "when": "^3.7.5"
   },
   "devDependencies": {

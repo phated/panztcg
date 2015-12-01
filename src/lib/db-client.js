@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const when = require('when');
 const PouchDB = require('pouchdb');
+PouchDB.plugin(require('pouchdb-quick-search'));
 const { reach } = require('origami');
 
 function map(mapperFn, list){
@@ -19,6 +20,10 @@ const allDocsConfig = {
   include_docs: true
 };
 
+const defaultFields = [
+  'card_name'
+];
+
 class DbClient {
   constructor(path){
     this._db = new PouchDB(path);
@@ -32,6 +37,13 @@ class DbClient {
 
   get(id){
     return when(this._db.get(id));
+  }
+
+  search(query, fields = defaultFields){
+    return when(this._db.search({
+      query,
+      fields
+    }));
   }
 
 }

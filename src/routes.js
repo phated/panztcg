@@ -15,6 +15,12 @@ const routes = [
   },
   {
     method: 'GET',
+    // TODO: better path? maybe part of /cards
+    path: '/cards/search',
+    handler: require('./handlers/search-cards')
+  },
+  {
+    method: 'GET',
     path: '/images/{param*}',
     handler: {
       directory: {
