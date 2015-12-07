@@ -20,8 +20,7 @@ const routes = [
   },
   {
     method: 'GET',
-    // TODO: better path? maybe part of /cards
-    path: '/cards/search',
+    path: '/search/cards',
     handler: require('./handlers/search-cards')
   },
   {

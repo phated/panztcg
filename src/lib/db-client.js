@@ -39,10 +39,15 @@ class DbClient {
   }
 
   search(query, fields = defaultFields){
-    return when(this._db.search({
+    const config = {
       query,
-      fields
-    }));
+      fields,
+      include_docs: true
+    };
+
+    return when(this._db.search(config))
+      .fold(reach, 'rows')
+      .fold(map, docs);
   }
 
 }
