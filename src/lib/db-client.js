@@ -20,7 +20,8 @@ const allDocsConfig = {
 };
 
 const defaultFields = [
-  'card_name'
+  'card_name',
+  'ability'
 ];
 
 class DbClient {
@@ -39,6 +40,10 @@ class DbClient {
   }
 
   search(query, fields = defaultFields){
+    if(Array.isArray(fields) && !fields.length){
+      fields = defaultFields;
+    }
+
     const config = {
       query,
       fields,
