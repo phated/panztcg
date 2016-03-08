@@ -1,0 +1,13 @@
+.navbar-button {
+  margin-top: auto;
+  margin-bottom: auto;
+  background: transparent;
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  outline: none;
+}
+
+.navbar-button:focus {
+  outline: none;
+}
