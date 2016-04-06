@@ -87,7 +87,8 @@ rest('http://www.panztcg.com/master_list.php')
     var cards = [];
 
     $rows.each(function(){
-      var $cells = $(this).find('td');
+      var $row = $(this);
+      var $cells = $row.find('td');
 
       var card = {};
 
@@ -98,15 +99,12 @@ rest('http://www.panztcg.com/master_list.php')
 
         var normalizedText = text.replace(/\s+$/, '').trim();
 
-        // Normalize picture
-        if(key === 'picture'){
-          var $img = $(this).find('img');
-          var src = $img.attr('src');
-          normalizedText = src;
-        }
-
         card[key] = normalizedText;
       });
+
+      // Picture is a special case with a data attribute
+      var src = $row.attr('data-imgurl');
+      card.picture = src;
 
       console.log(card);
       cards.push(card);
