@@ -5,8 +5,12 @@ const path = require('path');
 const routes = [
   {
     method: 'GET',
-    path: '/',
-    handler: require('./handlers/home')
+    path: '/{param*}',
+    handler: {
+      directory: {
+        path: path.join(__dirname, '../dist-client/')
+      }
+    }
   },
   {
     method: 'GET',
