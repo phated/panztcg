@@ -21,7 +21,7 @@
     "static": "hjs-dev-server",
     "serve": "pouchdb-server --dir ./databases",
     "start": "npm run build && node .",
-    "build": "babel ./src-server/ --out-dir ./dist-server/",
+    "build": "babel ./src-server/ --out-dir ./dist-server/ && webpack",
     "prepublish": "npm run build"
   },
   "dependencies": {
