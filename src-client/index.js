@@ -2,6 +2,12 @@
 
 require('normalize.css');
 
+const registerServiceWorker = require('./index.serviceworker');
+
+if ('serviceWorker' in navigator) {
+  registerServiceWorker({ scope: '/' }).then(console.log.bind(console), console.error.bind(console));
+}
+
 const React = require('react');
 
 const { render } = require('react-dom');
