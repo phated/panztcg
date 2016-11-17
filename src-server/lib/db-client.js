@@ -2,6 +2,7 @@
 
 const when = require('when');
 const PouchDB = require('pouchdb');
+PouchDB.plugin(require('pouchdb-find'));
 PouchDB.plugin(require('pouchdb-quick-search'));
 const { reach } = require('origami');
 
@@ -15,7 +16,7 @@ function docs(item){
 }
 
 const allDocsConfig = {
-  startkey: '_design0',
+  endKey: '_design/\uffff',
   include_docs: true
 };
 
@@ -36,7 +37,40 @@ class DbClient {
   }
 
   get(id){
-    return when(this._db.get(id));
+    const db = this._db;
+    const idx = db.createIndex({
+      index: {
+        fields: ['id']
+      }
+    });
+
+    const query = idx
+      .then(() => db.find({ selector: { id }, limit: 1 }));
+
+    return when(query)
+      .fold(reach, 'docs.0');
+  }
+
+  update(card) {
+    const db = this._db;
+    const query = db.put(card);
+      // .catch(function(err) {
+      //   if (err.name === 'conflict') {
+      //     console.log(err);
+      //     return db.get(card._id, { conflicts: true });
+      //   } else {
+      //     throw err;
+      //   }
+      //   // console.log(err);
+      //   // throw err;
+      // })
+      // .tap(console.log);
+
+    return when(query);
+  }
+
+  delete(card) {
+    return when(this._db.remove(card));
   }
 
   search(query, fields = defaultFields){

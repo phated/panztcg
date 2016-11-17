@@ -5,6 +5,7 @@ var path = require('path');
 var _ = require('lodash');
 var fs = require('fs-extra');
 var eos = require('end-of-stream');
+var pump = require('pump');
 var rest = require('rest');
 var when = require('when');
 var guard = require('when/guard');
@@ -13,6 +14,8 @@ var cheerio = require('cheerio');
 var PouchDB = require('pouchdb');
 
 var db = new PouchDB('databases/cards');
+
+var sort = require('./src-server/lib/sort');
 
 function uniqueId(card){
   return card.card_number.toLowerCase() + '_' + _.snakeCase(card.card_name.replace(/'/, ''));
@@ -27,19 +30,17 @@ function imagePath(card){
 function fetchCard(card){
   var outPath = imagePath(card);
 
-  var stream = request(card.picture)
-    .on('error', function(){
-      console.log('error', card.picture);
-    })
-    .pipe(fs.createOutputStream(outPath));
-
   return when.promise(function(resolve, reject){
-    eos(stream, function(err){
+    pump([
+      request(card.picture),
+      fs.createOutputStream(outPath)
+    ], function(err){
       if(err){
-        reject(err);
-      } else {
-        resolve(card);
+        console.log('error', card.picture, err);
+        // reject(err);
       }
+
+      resolve(card);
     });
   });
 }
@@ -50,9 +51,12 @@ function fetchCards(cards){
 
 function saveCard(card){
   var record = _.assign({}, _.omit(card, 'picture'), {
-    _id: uniqueId(card),
+    _id: '' + sort(card) + '_' + uniqueId(card),
+    id: uniqueId(card),
     image: '/' + imagePath(card)
   });
+
+  console.log(record);
 
   return db.put(record);
 }
@@ -106,11 +110,11 @@ rest('http://www.panztcg.com/master_list.php')
       var src = $row.attr('data-imgurl');
       card.picture = src;
 
-      console.log(card);
+      // console.log(card);
       cards.push(card);
     });
 
     return cards;
   })
-  .then(fetchCards)
+  // .then(fetchCards)
   .then(saveCards);
